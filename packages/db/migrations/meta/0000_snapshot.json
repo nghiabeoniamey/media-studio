@@ -1,5 +1,5 @@
 {
-  "id": "f5d17aa7-6a39-4b90-bb56-151b25704647",
+  "id": "e8b3a642-4a49-44c2-8015-955601c9d031",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1912,11 +1912,17 @@
           "name": "chat_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "link_code": {
           "name": "link_code",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "link_code_expires_at": {
+          "name": "link_code_expires_at",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         },
@@ -1965,6 +1971,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "chat_id"
+          ]
+        },
+        "telegram_links_link_code_unique": {
+          "name": "telegram_links_link_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "link_code"
           ]
         }
       },

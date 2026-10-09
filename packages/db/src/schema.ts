@@ -96,9 +96,11 @@ export const telegramLinks = pgTable("telegram_links", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" })
     .unique(),
-  chatId: text("chat_id").notNull().unique(),
+  /** Null until the user sends `/start <linkCode>` to the bot. */
+  chatId: text("chat_id").unique(),
   /** One-time code the user sends to the bot to link their chat. */
-  linkCode: text("link_code"),
+  linkCode: text("link_code").unique(),
+  linkCodeExpiresAt: timestamp("link_code_expires_at", { withTimezone: true }),
   active: boolean("active").notNull().default(true),
   createdAt: createdAt(),
 });

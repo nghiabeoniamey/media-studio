@@ -46,7 +46,7 @@ Every provider call books its `Usage[]` with `recordUsage(..., idempotencyKey)`.
 
 - Provider interfaces: `packages/core/src/providers.ts`. Errors: `ProviderError` with `kind` retryable | blocked | fatal | config.
 - LLM: schema names and `<context>` JSON block per call: `packages/core/src/contracts.ts`.
-- Worker ↔ web: `WorkflowGateway` (`@media-studio/worker/gateway`), workflow/queue/topic names, `ReviewMessage`.
+- Worker ↔ web: `WorkflowGateway` (implemented in `apps/web/src/server/gateway.ts` with `DBOSClient`), workflow/queue/topic names, `ReviewMessage`. The workflow records the review row when it receives the message.
 - Worker → render: `RenderInput`.
 - Pricing: `packages/core/src/pricing.ts` (verified 2026-10-09).
 

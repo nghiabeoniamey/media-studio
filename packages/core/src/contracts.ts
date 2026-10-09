@@ -132,7 +132,13 @@ export const ReviewMessage = z.object({
 });
 export type ReviewMessage = z.infer<typeof ReviewMessage>;
 
-/** Implemented by apps/worker (`@media-studio/worker/gateway`), used by apps/web. */
+/**
+ * Implemented in apps/web (`src/server/gateway.ts`) with DBOSClient against the names above:
+ *   client.enqueue({ workflowName: WORKFLOWS.produceVideo, queueName: QUEUES.production,
+ *                    workflowID: productionWorkflowId(videoId) }, videoId)
+ *   client.send(workflowId, message, TOPICS.review)
+ * apps/worker registers its workflows and queues under exactly these names.
+ */
 export interface WorkflowGateway {
   /** Enqueue production for a video row; returns the workflow id (deterministic per video). */
   startProduction(videoId: string): Promise<string>;

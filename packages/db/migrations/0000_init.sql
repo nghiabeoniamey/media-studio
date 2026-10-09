@@ -203,12 +203,14 @@ CREATE TABLE "stories" (
 CREATE TABLE "telegram_links" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
-	"chat_id" text NOT NULL,
+	"chat_id" text,
 	"link_code" text,
+	"link_code_expires_at" timestamp with time zone,
 	"active" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "telegram_links_user_id_unique" UNIQUE("user_id"),
-	CONSTRAINT "telegram_links_chat_id_unique" UNIQUE("chat_id")
+	CONSTRAINT "telegram_links_chat_id_unique" UNIQUE("chat_id"),
+	CONSTRAINT "telegram_links_link_code_unique" UNIQUE("link_code")
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
