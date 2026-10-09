@@ -99,3 +99,38 @@ git checkout claude/peaceful-mendel-xhvicy
 git remote set-url origin https://github.com/nghiabeoniamey/media-studio.git
 git push -u origin claude/peaceful-mendel-xhvicy
 ```
+
+## 7. Ước lượng token / chi phí để hoàn thành
+
+**Cách ước lượng.** Dựa trên số đo thật của 2 agent đã chạy trong phiên cloud, dùng Claude Opus 5.5:
+
+| Agent | Kết quả | Token đã xử lý | Chi phí API tương đương |
+|---|---|---|---|
+| `providers` | ~3.100 dòng, chưa có test | ~51M token. Đa số là cache read do agent phải đọc lại ngữ cảnh dài ở mỗi lượt | ≈ $18–20 |
+| `render` | ~2.600 dòng, chưa có test | ~24M token | ≈ $10 |
+
+Tức là khoảng **15–17M token xử lý, tương đương ~$5–7, cho mỗi 1.000 dòng code**. Con số này đã gồm thời gian đọc tài liệu, thử lệnh và sửa lỗi.
+
+**Phần còn lại:**
+
+| Hạng mục | Khối lượng ước tính | Token xử lý | Chi phí (Opus 5.5) |
+|---|---|---|---|
+| providers: registry + test | ~800 dòng | 10–15M | $5–8 |
+| render: test, preview, kiểm tra hình | ~600 dòng | 8–12M | $4–7 |
+| bible: tải dữ liệu, parser, chỉ mục ≥150 truyện, test | ~1.200 dòng | 12–18M | $5–8 |
+| worker: pipeline 15 bước DBOS, Telegram, lịch, export, test E2E | ~4.000 dòng | 60–90M | $20–35 |
+| web: Next.js tiếng Việt, ~10 trang, auth, gateway, test, build, screenshot | ~6.000 dòng | 80–120M | $30–50 |
+| Ghép nối + chạy end-to-end bằng mock + sửa lỗi | — | 25–40M | $10–20 |
+| Review code + sửa | — | 20–30M | $8–15 |
+| **Tổng** | **~12.600 dòng** | **~215–325M** (output thật chỉ ~3–5M) | **≈ $80–145** |
+
+**Cách giảm chi phí khi code trên desktop:**
+1. **Làm tuần tự từng package trong một phiên**, không chạy nhiều agent song song. Mỗi agent song song đều phải đọc lại toàn bộ ngữ cảnh, nên đây là phần tốn nhất.
+2. **Mỗi package một phiên ngắn**, bắt đầu bằng:
+   > "Đọc docs/HANDOFF.md, docs/ARCHITECTURE.md và spec của package X trong docs/handoff/build-workflow.js, rồi hoàn thành X"
+
+   Commit xong thì mở phiên mới. Ngữ cảnh ngắn thì cache read ít hơn.
+3. **Cân nhắc dùng Claude Sonnet 5.5** (giá bằng khoảng một nửa Opus 5.5) cho phần nhiều code lặp như các trang web, test, chỉ mục truyện Kinh Thánh. Giữ Opus 5.5 cho worker pipeline và tích hợp. Ước tính tổng giảm còn **≈ $55–100**.
+4. Tự viết những phần đơn giản: danh sách 150 truyện Kinh Thánh, chuỗi giao diện tiếng Việt. Để Claude lo phần logic khó: pipeline, render, gateway.
+
+Đây là chi phí **viết code**. Chi phí **chạy** studio (gen video) nằm riêng ở DECISIONS.md mục 4: khoảng $51–103/tháng cho 1 niche.
