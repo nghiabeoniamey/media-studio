@@ -1,4 +1,5 @@
 import { NicheSettings, ProviderSelection, SeriesSettings, type VoiceConfig } from "./niche";
+import { SEO_WRITING_RULES } from "./seo";
 
 /** Production providers chosen in docs/DECISIONS.md (verified 2026-10-09). */
 export const DEFAULT_PROVIDERS: ProviderSelection = ProviderSelection.parse({
@@ -68,9 +69,11 @@ export const BIBLE_NICHE_SETTINGS: NicheSettings = NicheSettings.parse({
     maxWordsPerPage: 4,
   },
   brand: {
+    primaryColor: "#13213B",
+    accentColor: "#E3B04B",
     ctaText: "Follow for a Bible story every day",
     watermarkPosition: "top_right",
-    outro: { enabled: true, text: "Follow for a Bible story every day", durationSec: 2 },
+    outro: { enabled: true, text: "Shepherd's Lamp · A Bible story every day", durationSec: 2 },
     intro: { enabled: false, text: "", durationSec: 1.5 },
   },
   providers: DEFAULT_PROVIDERS,
@@ -85,7 +88,7 @@ export const BIBLE_NICHE_SETTINGS: NicheSettings = NicheSettings.parse({
     { time: "19:30", days: [], platforms: ["youtube", "facebook", "instagram", "tiktok"] },
   ],
   defaultVoice: BIBLE_NARRATOR_VOICE,
-  contentRules: BIBLE_CONTENT_RULES,
+  contentRules: [...BIBLE_CONTENT_RULES, ...SEO_WRITING_RULES],
 });
 
 export const BIBLE_SERIES_PRESETS: { slug: string; name: string; settings: SeriesSettings }[] = [
@@ -132,4 +135,16 @@ export const DEFAULT_BIBLE_CHARACTERS = [
       "young woman with a serene, gentle face, dark brown eyes, olive skin, dark hair mostly covered by a veil, calm and humble expression",
     wardrobe: "light blue mantle over a soft white tunic, long veil",
   },
+] as const;
+
+/**
+ * Brand identities per niche/series. Logo files live in /brand/<slug>/ (avatar.png 1024 px for
+ * profile pictures, watermark.png 256 px for the video overlay, lockup.png 1800x600 for banners
+ * and intro cards); upload watermark.png as the niche's BrandKit logo.
+ */
+export const BRAND_IDENTITIES = [
+  { slug: "shepherds-lamp", name: "Shepherd's Lamp", tagline: "Bible stories, brought to light", scope: "niche: Bible stories (default)", primaryColor: "#13213B", accentColor: "#E3B04B" },
+  { slug: "saints-and-faith", name: "Saints & Faith", tagline: "Catholic stories of holiness", scope: "series: catholic-saints (inside the Bible niche)", primaryColor: "#1C2E57", accentColor: "#D9B45A" },
+  { slug: "whisker-tales", name: "Whisker Tales", tagline: "Cozy 3D kitten adventures", scope: "niche: 3D kittens (phase 4)", primaryColor: "#FFF3DF", accentColor: "#F29A2E" },
+  { slug: "lives-in-ink", name: "Lives in Ink", tagline: "Illustrated stories of remarkable people", scope: "niche: illustrated biographies (phase 4)", primaryColor: "#1E2227", accentColor: "#C9A27C" },
 ] as const;

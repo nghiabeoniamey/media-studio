@@ -7,6 +7,7 @@ Niche đầu tiên: truyện Kinh Thánh (series Kitô giáo chung + series Côn
 ## Tài liệu
 
 - [`docs/DECISIONS.md`](docs/DECISIONS.md): tư vấn, quyết định kiến trúc, so sánh model, mô hình chi phí, lộ trình (tiếng Việt).
+- [`docs/SEO_CONTENT.md`](docs/SEO_CONTENT.md): thương hiệu từng chủ đề (logo trong [`brand/`](brand/)), SEO video, nội dung chân thật để giữ điều kiện kiếm tiền.
 - [`docs/research/`](docs/research/): báo cáo nghiên cứu gốc kèm nguồn và bảng kiểm chứng (2026-10-09, tiếng Anh).
 
 ## Trạng thái

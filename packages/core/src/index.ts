@@ -13,3 +13,4 @@ export * from "./status";
 export * from "./presets";
 export * from "./schedule";
 export * from "./contracts";
+export * from "./seo";

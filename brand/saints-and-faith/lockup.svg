@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="600" viewBox="0 0 1800 600">
+<defs><radialGradient id="petal" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#E3584B"/><stop offset="1" stop-color="#9E2330"/></radialGradient></defs><rect width="1800" height="600" rx="48" fill="#1C2E57"/>
+<g transform="translate(60 60) scale(.469)"><circle cx="512" cy="512" r="500" fill="#1C2E57"/><circle cx="512" cy="512" r="468" fill="none" stroke="#D9B45A" stroke-width="14"/><g fill="#D9B45A"><rect x="496" y="170" width="32" height="150" rx="6"/><rect x="448" y="214" width="128" height="30" rx="6"/></g>
+      <path d="M512 840 C506 760 520 700 512 640" stroke="#3E7D4F" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <path d="M512 760 C450 740 420 700 412 660 C470 668 500 700 512 740 Z" fill="#4E9A62"/>
+      <path d="M512 720 C574 700 604 660 612 620 C554 628 524 660 512 700 Z" fill="#4E9A62"/>
+      <g transform="translate(512 520)">
+        <g fill="url(#petal)">
+          <ellipse cx="0" cy="-92" rx="92" ry="78"/><ellipse cx="88" cy="-28" rx="92" ry="78"/><ellipse cx="54" cy="76" rx="92" ry="78"/>
+          <ellipse cx="-54" cy="76" rx="92" ry="78"/><ellipse cx="-88" cy="-28" rx="92" ry="78"/></g>
+        <circle r="72" fill="#B52A35"/><path d="M-40 0 C-30 -46 30 -46 40 0 C30 40 -30 40 -40 0 Z" fill="#7E1724"/>
+        <circle r="18" fill="#D9B45A"/></g></g>
+<text x="620" y="300" font-family="'DejaVu Serif','Liberation Serif',Georgia,serif" font-weight="700" font-size="121" fill="#F3ECDD">Saints &amp; Faith</text>
+<rect x="624" y="342" width="160" height="8" rx="4" fill="#D9B45A"/>
+<text x="624" y="430" font-family="Inter,'DejaVu Sans',Arial,sans-serif" font-size="52" fill="#D9B45A">Catholic stories of holiness</text></svg>

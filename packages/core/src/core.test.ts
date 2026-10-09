@@ -255,3 +255,59 @@ describe("contracts", () => {
     expect(parseContextBlock("no block here")).toBeNull();
   });
 });
+
+describe("seo", () => {
+  const good = {
+    youtube: {
+      title: "Moses Strikes the Rock | Water in the Desert",
+      description: "Moses strikes the rock at Rephidim and water pours out for a thirsty people (Exodus 17:1-7).\n\nContext...\n\n#BibleStory #Moses #Exodus",
+      tags: ["moses", "bible story", "exodus 17"],
+    },
+    facebook: { caption: "Moses strikes the rock and water flows in the desert. What do you do when you are thirsty for hope?", hashtags: ["#BibleStory", "#Moses", "#Exodus"] },
+    instagram: { caption: "Moses strikes the rock: God provides water in the desert.", hashtags: ["BibleStory", "Moses", "Faith"] },
+    tiktok: { caption: "Moses strikes the rock and water flows. Exodus 17.", hashtags: ["#BibleStory", "#Moses", "#Faith"] },
+  };
+
+  it("passes well-formed metadata", async () => {
+    const { lintPlatformMeta, hasBlockingSeoIssues } = await import("./seo");
+    const issues = lintPlatformMeta(good, { primaryKeyword: "Moses strikes the rock", scriptureRef: "Exodus 17:1-7" });
+    expect(issues).toEqual([]);
+    expect(hasBlockingSeoIssues(issues)).toBe(false);
+  });
+
+  it("flags engagement bait, late keywords and hashtag spam", async () => {
+    const { lintPlatformMeta, hasBlockingSeoIssues } = await import("./seo");
+    const bad = {
+      ...good,
+      youtube: { ...good.youtube, title: "You won't believe what happened next in the desert with MOSES striking a rock" },
+      facebook: { caption: "Type AMEN if you believe! Share this to be blessed", hashtags: ["#a", "#b", "#c", "#d", "#e", "#f"] },
+    };
+    const issues = lintPlatformMeta(bad, { primaryKeyword: "Moses strikes the rock", scriptureRef: "Exodus 17:1-7" });
+    const text = issues.map((i) => `${i.platform}.${i.field}: ${i.message}`).join("\n");
+    expect(text).toMatch(/youtube.title: put "Moses strikes the rock"/);
+    expect(text).toMatch(/clickbait/);
+    expect(text).toMatch(/facebook.caption: engagement bait: "Type AMEN/);
+    expect(text).toMatch(/facebook.caption: engagement bait: "Share this/);
+    expect(text).toMatch(/6 hashtags/);
+    expect(hasBlockingSeoIssues(issues)).toBe(true);
+  });
+
+  it("builds a YouTube description with citation, disclosure and at most 3 hashtags", async () => {
+    const { buildYoutubeDescription } = await import("./seo");
+    const d = buildYoutubeDescription({
+      summary: "Moses strikes the rock and water flows.",
+      context: "Israel camps at Rephidim.",
+      scripture: { ref: "Exodus 17:1-7", translation: "BSB" },
+      seriesName: "Bible Stories",
+      callToAction: null,
+      hashtags: ["BibleStory", "#Moses", "#moses", "#Exodus", "#Faith"],
+    });
+    expect(d).toMatch(/Scripture: Exodus 17:1-7 \(BSB\)/);
+    expect(d).toMatch(/made with AI tools/);
+    expect(d.match(/#\w+/g)).toEqual(["#BibleStory", "#Moses", "#Exodus"]);
+  });
+
+  it("ships SEO rules with the Bible niche preset", () => {
+    expect(BIBLE_NICHE_SETTINGS.contentRules.some((r) => r.includes("engagement bait"))).toBe(true);
+  });
+});

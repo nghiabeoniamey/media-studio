@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="600" viewBox="0 0 1800 600">
+<defs><radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFE7A3" stop-opacity=".85"/><stop offset="1" stop-color="#FFE7A3" stop-opacity="0"/></radialGradient>
+      <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3C4"/><stop offset=".55" stop-color="#F5B83D"/><stop offset="1" stop-color="#D9772B"/></linearGradient>
+      <linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9B866"/><stop offset="1" stop-color="#B9792F"/></linearGradient></defs><rect width="1800" height="600" rx="48" fill="#13213B"/>
+<g transform="translate(60 60) scale(.469)"><circle cx="512" cy="512" r="500" fill="#13213B"/><circle cx="512" cy="512" r="468" fill="none" stroke="#E3B04B" stroke-width="14"/><circle cx="512" cy="400" r="210" fill="url(#glow)"/>
+      <g stroke="#E3B04B" stroke-width="10" stroke-linecap="round" opacity=".8">
+        <line x1="512" y1="168" x2="512" y2="210"/><line x1="352" y1="236" x2="382" y2="266"/><line x1="672" y1="236" x2="642" y2="266"/>
+        <line x1="296" y1="392" x2="338" y2="392"/><line x1="728" y1="392" x2="686" y2="392"/></g>
+      <path d="M512 250 C566 330 594 384 562 446 C547 474 526 486 512 486 C498 486 477 474 462 446 C430 384 458 330 512 250 Z" fill="url(#flame)"/>
+      <path d="M512 352 C534 392 542 420 528 448 C522 460 516 464 512 464 C508 464 502 460 496 448 C482 420 490 392 512 352 Z" fill="#FFF8E1"/>
+      <path d="M268 612 Q268 540 380 528 L700 528 Q790 536 812 572 Q790 600 742 610 Q720 690 620 712 L404 712 Q268 700 268 612 Z" fill="url(#clay)"/>
+      <ellipse cx="512" cy="560" rx="70" ry="16" fill="#7A4A1C" opacity=".55"/>
+      <path d="M268 600 Q210 600 214 650 Q220 700 300 690" fill="none" stroke="#C88A3C" stroke-width="22" stroke-linecap="round"/>
+      <rect x="404" y="712" width="216" height="26" rx="12" fill="#A4682A"/>
+      <path d="M512 488 L512 528" stroke="#7A4A1C" stroke-width="10"/></g>
+<text x="620" y="300" font-family="'DejaVu Serif','Liberation Serif',Georgia,serif" font-weight="700" font-size="113" fill="#F4E9D0">Shepherd's Lamp</text>
+<rect x="624" y="342" width="160" height="8" rx="4" fill="#E3B04B"/>
+<text x="624" y="430" font-family="Inter,'DejaVu Sans',Arial,sans-serif" font-size="52" fill="#E3B04B">Bible stories, brought to light</text></svg>

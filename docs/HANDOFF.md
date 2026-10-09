@@ -1,7 +1,7 @@
 # Bàn giao: trạng thái dự án và cách tiếp tục trên máy desktop
 
 > Cập nhật 2026-10-09. Phiên cloud dừng sớm vì sắp hết ngân sách token.
-> Đọc theo thứ tự: file này → [DECISIONS.md](./DECISIONS.md) → [ARCHITECTURE.md](./ARCHITECTURE.md) → [SETUP.md](./SETUP.md).
+> Đọc theo thứ tự: file này → [DECISIONS.md](./DECISIONS.md) → [ARCHITECTURE.md](./ARCHITECTURE.md) → [SETUP.md](./SETUP.md) → [SEO_CONTENT.md](./SEO_CONTENT.md) (thương hiệu, SEO, nội dung chân thật).
 
 ## 1. Trạng thái từng phần
 
@@ -51,7 +51,7 @@ Hợp đồng bắt buộc giữa các package nằm trong `packages/core/src/co
 1. ~~providers~~ ✅ (còn: thử với API key thật).
 2. ~~bible~~ ✅
 3. ~~render~~ ✅
-4. **worker:**
+4. **worker** (thêm: chạy `lintPlatformMeta` sau bước kịch bản, dùng `buildYoutubeDescription` khi xuất gói — xem SEO_CONTENT.md mục 5):
    - pipeline `produceVideo` 15 bước (ARCHITECTURE.md), `ensureCharacterSheet`, `buildMusicLibrary`;
    - Telegram (grammY), lịch nhắc đăng bài, xuất gói zip;
    - test DBOS end-to-end với provider mock.
