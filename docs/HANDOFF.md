@@ -86,9 +86,9 @@ Lưu ý:
 - Kỹ thuật giữ nhân vật/góc máy nằm ở `packages/core/src/prompts.ts`:
   - `selectKeyframeReferences`, `buildKeyframePrompt`, `buildMotionPrompt`, `kenBurnsFor`;
   - hero clip luôn là image-to-video từ keyframe.
-- Push lên GitHub từ cloud bị lỗi 403: Claude GitHub App chưa có quyền ghi vào repo. Xem mục 6.
+- Code đã có trên GitHub (nhánh `claude/peaceful-mendel-xhvicy`).
 
-## 6. Nếu repo trên GitHub chưa có code
+## 6. Phương án dự phòng: git bundle
 
 Code được gửi kèm dạng **git bundle** (`media-studio.bundle`). Trên máy desktop:
 
