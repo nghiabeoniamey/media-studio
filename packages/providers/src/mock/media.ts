@@ -56,7 +56,7 @@ export async function renderMockImage(args: { prompt: string; aspectRatio: Aspec
   const hue = hash32(args.prompt) % 360;
   const c0 = hslHex(hue, 0.45, 0.28);
   const c1 = hslHex((hue + 45) % 360, 0.55, 0.62);
-  const source = `gradients=s=${width}x${height}:c0=0x${c0}:c1=0x${c1}:x0=0:y0=0:x1=${width}:y1=${height}:nb_colors=2:speed=0:rate=1`;
+  const source = `gradients=s=${width}x${height}:c0=0x${c0}:c1=0x${c1}:x0=0:y0=0:x1=${width}:y1=${height}:nb_colors=2:speed=0.00001:rate=1`;
   return withTempDir(async (dir) => {
     const out = join(dir, "image.png");
     const textPath = join(dir, "label.txt");
