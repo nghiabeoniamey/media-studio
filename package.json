@@ -1,0 +1,25 @@
+{
+  "name": "media-studio",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r --parallel run typecheck",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r --parallel run lint",
+    "dev:web": "pnpm --filter @media-studio/web dev",
+    "dev:worker": "pnpm --filter @media-studio/worker dev",
+    "db:generate": "pnpm --filter @media-studio/db generate",
+    "db:migrate": "pnpm --filter @media-studio/db migrate",
+    "db:seed": "pnpm --filter @media-studio/db seed"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.3"
+  }
+}

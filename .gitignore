@@ -1,0 +1,17 @@
+node_modules/
+.next/
+dist/
+out/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+# runtime data
+/data/
+/tmp/
+packages/bible/data/*.json
+!packages/bible/data/fixtures/
+.remotion/
+*.log
