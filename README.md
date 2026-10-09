@@ -11,4 +11,4 @@ Niche đầu tiên: truyện Kinh Thánh (series Kitô giáo chung + series Côn
 
 ## Trạng thái
 
-Đã xong: core, db, storage, providers, render, Docker. Chưa làm: bible, worker, web. Xem [`docs/HANDOFF.md`](docs/HANDOFF.md) để tiếp tục.
+Đã xong: core, db, storage, providers, render, bible, Docker. Chưa làm: worker, web. Xem [`docs/HANDOFF.md`](docs/HANDOFF.md) để tiếp tục.

@@ -14,7 +14,7 @@
 | Docker (`docker/`, `docker-compose.yml`, Caddy HTTPS) | ✅ Viết xong, **chưa build thử** | — |
 | `packages/providers`: adapter Anthropic, Google, MiniMax, xAI, fal, ElevenLabs + mock | ✅ Xong: `createProviderRegistry` (provider thật chỉ bật khi có key, luôn có `mock`), `catalog()`; adapter vendor **chưa thử với API thật** (chỉ test bằng fetch giả) | 10/10 pass |
 | `packages/render`: Remotion StoryVideo (Ken Burns, clip, phụ đề, verse, brand), ffmpeg helpers, alignWords | ✅ Xong: render thật 1080x1920 có âm thanh (~60–95 s cho 6,6 s video trên 4 CPU); `pnpm --filter @media-studio/render preview` tạo video mẫu; `install-whisper` cài whisper.cpp | 9/9 pass (gồm 1 lần render thật) |
-| `packages/bible`: kho Kinh Thánh BSB/KJV/DRC/CPDV + tra cứu + chỉ mục truyện | 🔴 Chưa làm | — |
+| `packages/bible`: kho Kinh Thánh BSB/KJV/DRC/CPDV + tra cứu + chỉ mục truyện | ✅ Xong: `pnpm --filter @media-studio/bible fetch-data` tải 4 bản (BSB/KJV 66 sách, DRC/CPDV 73 sách); `parseReference`, `getPassage` (tự ánh xạ số Thánh Vịnh sang Vulgate cho DRC/CPDV), `suggestPassages` với 192 truyện | 26/26 pass |
 | `apps/worker`: pipeline DBOS, Telegram bot, xếp lịch, xuất gói | 🔴 Chưa làm | — |
 | `apps/web`: dashboard Next.js tiếng Việt | 🔴 Chưa làm | — |
 
@@ -39,9 +39,7 @@ Hợp đồng bắt buộc giữa các package nằm trong `packages/core/src/co
 ## 3. Thứ tự làm tiếp (khuyến nghị)
 
 1. ~~providers~~ ✅ (còn: thử với API key thật).
-2. **bible:**
-   - viết `scripts/fetch.ts`, tải từ `raw.githubusercontent.com/scrollmapper/bible_databases/master/formats/json/{BSB,KJV,DRC,CPDV}.json`;
-   - viết `parseReference`, `getPassage`, `suggestPassages` (≥150 truyện), kèm test.
+2. ~~bible~~ ✅
 3. ~~render~~ ✅
 4. **worker:**
    - pipeline `produceVideo` 15 bước (ARCHITECTURE.md), `ensureCharacterSheet`, `buildMusicLibrary`;
@@ -74,7 +72,8 @@ DATABASE_URL_TEST=postgres://media:media@localhost:5432/media_studio_test pnpm t
 ```
 
 Lưu ý:
-- `packages/bible`, `apps/worker`, `apps/web` hiện chỉ là thư mục rỗng.
+- `apps/worker`, `apps/web` hiện chỉ là thư mục rỗng.
+- Lần đầu chạy trên máy: `pnpm --filter @media-studio/bible fetch-data` để tải kho Kinh Thánh (~36 MB, không commit vào git).
 
 ## 5. Những điều cần nhớ
 

@@ -27,7 +27,7 @@ RUN pnpm install --frozen-lockfile
 FROM deps AS app
 COPY . .
 # Public-domain Bible corpora (BSB, KJV, DRC, CPDV) for grounding and on-screen verses
-RUN pnpm --filter @media-studio/bible fetch
+RUN pnpm --filter @media-studio/bible fetch-data
 # Chrome Headless Shell for Remotion rendering
 RUN cd packages/render && pnpm exec remotion browser ensure
 # Optional word-level caption alignment (adds ~2 min to the build)
