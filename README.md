@@ -11,4 +11,4 @@ Niche đầu tiên: truyện Kinh Thánh (series Kitô giáo chung + series Côn
 
 ## Trạng thái
 
-Đã chốt thiết kế. Phase 1 (MVP: ra video đầu tiên, đăng tay) chưa bắt đầu code.
+Phần nền (core, db, storage, Docker) đã xong; providers và render đang dở dang; bible, worker, web chưa làm. Xem [`docs/HANDOFF.md`](docs/HANDOFF.md) để tiếp tục.
