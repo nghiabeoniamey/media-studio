@@ -18,3 +18,4 @@ packages/bible/data/*.json
 
 # agent worktrees
 .claude/worktrees/
+packages/render/data/

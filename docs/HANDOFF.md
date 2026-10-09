@@ -12,11 +12,19 @@
 | `packages/db`: Drizzle schema + migration, auth (scrypt, session), cost ledger chống ghi trùng, chuyển trạng thái, seed niche Kinh Thánh | ✅ Xong | 5/5 pass (Postgres thật) |
 | `packages/storage`: local + S3/Cloudflare R2 | ✅ Xong | 4/4 pass |
 | Docker (`docker/`, `docker-compose.yml`, Caddy HTTPS) | ✅ Viết xong, **chưa build thử** | — |
-| `packages/providers`: adapter Anthropic, Google, MiniMax, xAI, fal, ElevenLabs + mock | 🟡 **Dở dang**: đã có adapter + mock; **thiếu `src/registry.ts`** (`createProviderRegistry`) nên còn 1 lỗi typecheck; **chưa có test** | — |
-| `packages/render`: Remotion StoryVideo (Ken Burns, clip, phụ đề, verse, brand), ffmpeg helpers, alignWords | 🟡 **Dở dang**: typecheck sạch; **chưa có test, script preview, install-whisper**; chưa render thử lần nào | — |
+| `packages/providers`: adapter Anthropic, Google, MiniMax, xAI, fal, ElevenLabs + mock | ✅ Xong: `createProviderRegistry` (provider thật chỉ bật khi có key, luôn có `mock`), `catalog()`; adapter vendor **chưa thử với API thật** (chỉ test bằng fetch giả) | 10/10 pass |
+| `packages/render`: Remotion StoryVideo (Ken Burns, clip, phụ đề, verse, brand), ffmpeg helpers, alignWords | ✅ Xong: render thật 1080x1920 có âm thanh (~60–95 s cho 6,6 s video trên 4 CPU); `pnpm --filter @media-studio/render preview` tạo video mẫu; `install-whisper` cài whisper.cpp | xem mục 1b |
 | `packages/bible`: kho Kinh Thánh BSB/KJV/DRC/CPDV + tra cứu + chỉ mục truyện | 🔴 Chưa làm | — |
 | `apps/worker`: pipeline DBOS, Telegram bot, xếp lịch, xuất gói | 🔴 Chưa làm | — |
 | `apps/web`: dashboard Next.js tiếng Việt | 🔴 Chưa làm | — |
+
+### 1b. Ghi chú cho providers + render
+
+- Chạy preview: `REMOTION_BROWSER_EXECUTABLE=<đường dẫn Chrome/Chromium> pnpm --filter @media-studio/render preview`. Kết quả nằm ở `packages/render/data/preview-*.mp4`. Bỏ trống biến này nếu máy có mạng: Remotion sẽ tự tải Chrome Headless Shell.
+- Việc chưa làm:
+  - **Worker** phải đặt thẻ câu Kinh Thánh (`verse`) kết thúc trước thẻ outro, vì hai lớp này đang chồng lên nhau trong video mẫu.
+  - Có thể ẩn phụ đề khi outro bắt đầu.
+  - Thử từng adapter vendor với API key thật: Anthropic, Gemini (ảnh, TTS, Lyria, Omni), MiniMax, xAI, fal, ElevenLabs. Hình dạng request/response được viết theo tài liệu đã nghiên cứu, nhưng **chưa gọi API thật lần nào**.
 
 ## 2. Spec chi tiết cho phần còn lại
 
@@ -30,15 +38,11 @@ Hợp đồng bắt buộc giữa các package nằm trong `packages/core/src/co
 
 ## 3. Thứ tự làm tiếp (khuyến nghị)
 
-1. **providers:**
-   - viết `src/registry.ts`: `createProviderRegistry({ env, fetch })` đăng ký provider có API key, luôn có `mock`, cùng `catalog()`;
-   - viết test cho mock (ffprobe kiểm tra media thật) và cho adapter (mock fetch).
+1. ~~providers~~ ✅ (còn: thử với API key thật).
 2. **bible:**
    - viết `scripts/fetch.ts`, tải từ `raw.githubusercontent.com/scrollmapper/bible_databases/master/formats/json/{BSB,KJV,DRC,CPDV}.json`;
    - viết `parseReference`, `getPassage`, `suggestPassages` (≥150 truyện), kèm test.
-3. **render:**
-   - viết test render 6 giây (bản có brand và bản sạch), script `preview`, script `install-whisper`;
-   - xem thử vài frame để kiểm tra phụ đề và Ken Burns.
+3. ~~render~~ ✅
 4. **worker:**
    - pipeline `produceVideo` 15 bước (ARCHITECTURE.md), `ensureCharacterSheet`, `buildMusicLibrary`;
    - Telegram (grammY), lịch nhắc đăng bài, xuất gói zip;
@@ -70,7 +74,6 @@ DATABASE_URL_TEST=postgres://media:media@localhost:5432/media_studio_test pnpm t
 ```
 
 Lưu ý:
-- `packages/providers` sẽ báo lỗi typecheck cho đến khi có `src/registry.ts`.
 - `packages/bible`, `apps/worker`, `apps/web` hiện chỉ là thư mục rỗng.
 
 ## 5. Những điều cần nhớ
