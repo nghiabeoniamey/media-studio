@@ -13,7 +13,7 @@
 | `packages/storage`: local + S3/Cloudflare R2 | ✅ Xong | 4/4 pass |
 | Docker (`docker/`, `docker-compose.yml`, Caddy HTTPS) | ✅ Viết xong, **chưa build thử** | — |
 | `packages/providers`: adapter Anthropic, Google, MiniMax, xAI, fal, ElevenLabs + mock | ✅ Xong: `createProviderRegistry` (provider thật chỉ bật khi có key, luôn có `mock`), `catalog()`; adapter vendor **chưa thử với API thật** (chỉ test bằng fetch giả) | 10/10 pass |
-| `packages/render`: Remotion StoryVideo (Ken Burns, clip, phụ đề, verse, brand), ffmpeg helpers, alignWords | ✅ Xong: render thật 1080x1920 có âm thanh (~60–95 s cho 6,6 s video trên 4 CPU); `pnpm --filter @media-studio/render preview` tạo video mẫu; `install-whisper` cài whisper.cpp | xem mục 1b |
+| `packages/render`: Remotion StoryVideo (Ken Burns, clip, phụ đề, verse, brand), ffmpeg helpers, alignWords | ✅ Xong: render thật 1080x1920 có âm thanh (~60–95 s cho 6,6 s video trên 4 CPU); `pnpm --filter @media-studio/render preview` tạo video mẫu; `install-whisper` cài whisper.cpp | 9/9 pass (gồm 1 lần render thật) |
 | `packages/bible`: kho Kinh Thánh BSB/KJV/DRC/CPDV + tra cứu + chỉ mục truyện | 🔴 Chưa làm | — |
 | `apps/worker`: pipeline DBOS, Telegram bot, xếp lịch, xuất gói | 🔴 Chưa làm | — |
 | `apps/web`: dashboard Next.js tiếng Việt | 🔴 Chưa làm | — |
