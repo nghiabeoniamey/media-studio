@@ -8,7 +8,7 @@ import { alignScriptToAsr, alignWords, mergeTokensToWords, scriptWords } from ".
 import { extractFrame, makeThumbnail, probeMedia, wrapText } from "./ffmpeg";
 import { buildCaptionPages } from "./lib/captions";
 import { SAFE_AREA, contains, overlayLayout, safeAreaBox } from "./lib/layout";
-import { fitClip, kenBurnsTransform, planShotTimeline } from "./lib/timeline";
+import { fitClip, kenBurnsTransform, planShotTimeline, verseWindow } from "./lib/timeline";
 import { renderVideo } from "./render";
 import { FIXTURE_SCRIPT, buildFixtureInput, makeFixtureAssets } from "./testing/fixtures";
 
@@ -43,6 +43,16 @@ describe("timeline math", () => {
     const plan = kenBurnsFor("push_in");
     expect(kenBurnsTransform(plan, 0).scale).toBeCloseTo(plan.fromScale);
     expect(kenBurnsTransform(plan, 1).scale).toBeCloseTo(plan.toScale);
+  });
+});
+
+describe("verse window", () => {
+  it("ends the verse card where the outro begins and drops slivers", () => {
+    const outro = { startSec: 4.6, endSec: 6.6 };
+    expect(verseWindow({ startSec: 4.2, durationSec: 2.2 }, 6.6, null)).toEqual({ startSec: 4.2, endSec: 6.4 });
+    expect(verseWindow({ startSec: 3.0, durationSec: 2.2 }, 6.6, outro)).toEqual({ startSec: 3.0, endSec: 4.6 });
+    expect(verseWindow({ startSec: 4.2, durationSec: 2.2 }, 6.6, outro)).toBeNull();
+    expect(verseWindow(null, 6.6, outro)).toBeNull();
   });
 });
 

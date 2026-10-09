@@ -12,9 +12,9 @@
 | `packages/db`: Drizzle schema + migration, auth (scrypt, session), cost ledger chống ghi trùng, chuyển trạng thái, seed niche Kinh Thánh | ✅ Xong | 5/5 pass (Postgres thật) |
 | `packages/storage`: local + S3/Cloudflare R2 | ✅ Xong | 4/4 pass |
 | Docker (`docker/`, `docker-compose.yml`, Caddy HTTPS) | ✅ Viết xong, **chưa build thử** | — |
-| `packages/providers`: adapter Anthropic, Google, MiniMax, xAI, fal, ElevenLabs + mock | ✅ Xong: `createProviderRegistry` (provider thật chỉ bật khi có key, luôn có `mock`), `catalog()`; adapter vendor **chưa thử với API thật** (chỉ test bằng fetch giả) | 10/10 pass |
+| `packages/providers`: adapter Anthropic, Google, MiniMax, xAI, fal, ElevenLabs + mock | ✅ Xong: `createProviderRegistry` (provider thật chỉ bật khi có key, luôn có `mock`), `catalog()`; adapter vendor **chưa thử với API thật** (chỉ test bằng fetch giả) | 14/14 pass |
 | `packages/render`: Remotion StoryVideo (Ken Burns, clip, phụ đề, verse, brand), ffmpeg helpers, alignWords | ✅ Xong: render thật 1080x1920 có âm thanh (~60–95 s cho 6,6 s video trên 4 CPU); `pnpm --filter @media-studio/render preview` tạo video mẫu; `install-whisper` cài whisper.cpp | 9/9 pass (gồm 1 lần render thật) |
-| `packages/bible`: kho Kinh Thánh BSB/KJV/DRC/CPDV + tra cứu + chỉ mục truyện | ✅ Xong: `pnpm --filter @media-studio/bible fetch-data` tải 4 bản (BSB/KJV 66 sách, DRC/CPDV 73 sách); `parseReference`, `getPassage` (tự ánh xạ số Thánh Vịnh sang Vulgate cho DRC/CPDV), `suggestPassages` với 192 truyện | 26/26 pass |
+| `packages/bible`: kho Kinh Thánh BSB/KJV/DRC/CPDV + tra cứu + chỉ mục truyện | ✅ Xong: `pnpm --filter @media-studio/bible fetch-data` tải 4 bản (BSB/KJV 66 sách, DRC/CPDV 73 sách); `parseReference`, `getPassage` (tự ánh xạ số Thánh Vịnh sang Vulgate cho DRC/CPDV), `suggestPassages` với 192 truyện | 27/27 pass |
 | `apps/worker`: pipeline DBOS, Telegram bot, xếp lịch, xuất gói | 🔴 Chưa làm | — |
 | `apps/web`: dashboard Next.js tiếng Việt | 🔴 Chưa làm | — |
 
@@ -22,9 +22,19 @@
 
 - Chạy preview: `REMOTION_BROWSER_EXECUTABLE=<đường dẫn Chrome/Chromium> pnpm --filter @media-studio/render preview`. Kết quả nằm ở `packages/render/data/preview-*.mp4`. Bỏ trống biến này nếu máy có mạng: Remotion sẽ tự tải Chrome Headless Shell.
 - Việc chưa làm:
-  - **Worker** phải đặt thẻ câu Kinh Thánh (`verse`) kết thúc trước thẻ outro, vì hai lớp này đang chồng lên nhau trong video mẫu.
+  - ~~Thẻ câu Kinh Thánh chồng lên thẻ outro~~: render tự cắt verse tại thời điểm outro bắt đầu (`verseWindow`). Worker vẫn nên đặt verse trước outro để hiển thị trọn vẹn.
   - Có thể ẩn phụ đề khi outro bắt đầu.
   - Thử từng adapter vendor với API key thật: Anthropic, Gemini (ảnh, TTS, Lyria, Omni), MiniMax, xAI, fal, ElevenLabs. Hình dạng request/response được viết theo tài liệu đã nghiên cứu, nhưng **chưa gọi API thật lần nào**.
+
+### 1c. Rà soát ngày 2026-10-09 (providers, render, bible)
+
+| Hạng mục | Kết quả |
+|---|---|
+| Adapter Anthropic | Cả 5 schema pipeline chuyển được sang structured output. Gửi đúng adaptive thinking, effort, refusal fallback (không gửi cho Haiku). Refusal → `blocked`, sai schema / JSON hỏng → `retryable`. Model fallback lạ được ghi $0 kèm cảnh báo, không văng lỗi. Có test với client giả |
+| Adapter Google | Dùng Interactions API của `@google/genai` 2.x, khớp typings của SDK. TTS bọc PCM 24 kHz thành WAV. **Chưa gọi API thật** |
+| Server render | Chỉ nghe 127.0.0.1, mỗi file một token ngẫu nhiên, hỗ trợ Range/HEAD, không lộ file ngoài danh sách |
+| Lỗi đã sửa | Gradient ffmpeg của mock (`speed=0`); verse chồng outro; `bible` cache vĩnh viễn lần đọc thất bại; script `fetch` trùng lệnh có sẵn của pnpm (đổi thành `fetch-data`) |
+| Còn lại | Thử từng adapter vendor với API key thật. Thánh Vịnh có câu tiêu đề có thể lệch 1 số câu ở bản DRC/CPDV |
 
 ## 2. Spec chi tiết cho phần còn lại
 

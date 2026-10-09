@@ -54,7 +54,11 @@ export function loadCorpus(code: string, dir = dataDir()): Promise<Corpus | null
   if (!pending) {
     pending = readFile(path, "utf8")
       .then((raw) => JSON.parse(raw) as Corpus)
-      .catch(() => null);
+      .catch(() => {
+        // Don't remember a miss: the corpus may be downloaded later in the same process.
+        cache.delete(path);
+        return null;
+      });
     cache.set(path, pending);
   }
   return pending;

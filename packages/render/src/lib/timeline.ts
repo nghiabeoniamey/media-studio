@@ -203,3 +203,21 @@ export function secToFrame(sec: number, fps: number): number {
 export function totalFrames(totalSec: number, fps: number): number {
   return Math.max(1, Math.round(totalSec * fps));
 }
+
+/** Shortest verse card worth showing; anything shorter after clipping is dropped. */
+export const MIN_VERSE_SEC = 0.8;
+
+/**
+ * Keep the verse card out of the outro (and inside the video) so the two cards never stack.
+ * Returns null when too little of the verse window remains.
+ */
+export function verseWindow(
+  verse: { startSec: number; durationSec: number } | null,
+  totalSec: number,
+  outro: TimeWindow | null,
+): TimeWindow | null {
+  if (!verse || !(verse.durationSec > 0)) return null;
+  const startSec = Math.max(0, verse.startSec);
+  const endSec = Math.min(verse.startSec + verse.durationSec, outro ? outro.startSec : totalSec, totalSec);
+  return endSec - startSec >= MIN_VERSE_SEC ? { startSec, endSec } : null;
+}

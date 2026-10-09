@@ -4,7 +4,7 @@ import { musicEnvelope, musicGain, musicSegments, seamGain, speechSegments } fro
 import { buildCaptionPages } from "../lib/captions";
 import { charsPerLine, overlayLayout } from "../lib/layout";
 import type { StoryVideoProps } from "../lib/style";
-import { brandTimeline, planShotTimeline, secToFrame } from "../lib/timeline";
+import { brandTimeline, planShotTimeline, secToFrame, verseWindow } from "../lib/timeline";
 import { CaptionLayer } from "./Captions";
 import { CtaLowerThird, IntroCard, OutroCard, VerseCard, Watermark } from "./Overlays";
 import { ClipShot, FilmLook, StillShot } from "./Shots";
@@ -17,6 +17,7 @@ export const StoryVideo: React.FC<StoryVideoProps> = ({ input, depthSrc }) => {
 
   const timeline = useMemo(() => planShotTimeline(input.shots, total), [input.shots, total]);
   const brandTimes = useMemo(() => brandTimeline(total, input.brand), [input.brand, total]);
+  const verseTimes = useMemo(() => verseWindow(input.verse, total, brandTimes.outro), [input.verse, total, brandTimes.outro]);
   const layout = useMemo(
     () =>
       overlayLayout({
@@ -73,17 +74,17 @@ export const StoryVideo: React.FC<StoryVideoProps> = ({ input, depthSrc }) => {
 
       <FilmLook />
 
-      {input.verse && input.verse.durationSec > 0 ? (
+      {input.verse && verseTimes ? (
         <Sequence
-          from={secToFrame(input.verse.startSec, fps)}
-          durationInFrames={Math.max(1, secToFrame(input.verse.durationSec, fps))}
+          from={secToFrame(verseTimes.startSec, fps)}
+          durationInFrames={Math.max(1, secToFrame(verseTimes.endSec - verseTimes.startSec, fps))}
           name="verse"
         >
           <VerseCard
             verse={input.verse}
             box={layout.verse}
             accent={accent}
-            durationFrames={Math.max(1, secToFrame(input.verse.durationSec, fps))}
+            durationFrames={Math.max(1, secToFrame(verseTimes.endSec - verseTimes.startSec, fps))}
           />
         </Sequence>
       ) : null}

@@ -126,3 +126,24 @@ describe.skipIf(!existsSync(`${realData}DRC.json`))("getPassage (downloaded corp
     expect((await getPassage("DRC", "2 Maccabees 7:1"))?.text).toMatch(/seven brethren|brothers/i);
   });
 });
+
+describe("corpus cache", () => {
+  it("does not remember a missing corpus", async () => {
+    const { mkdtemp, copyFile } = await import("node:fs/promises");
+    const { tmpdir } = await import("node:os");
+    const { join } = await import("node:path");
+    const dir = await mkdtemp(join(tmpdir(), "ms-bible-"));
+    const previous = process.env.BIBLE_DATA_DIR;
+    process.env.BIBLE_DATA_DIR = dir;
+    clearCorpusCache();
+    try {
+      expect(await getPassage("BSB", "John 3:16")).toBeNull();
+      await copyFile(fileURLToPath(new URL("../data/fixtures/BSB.json", import.meta.url)), join(dir, "BSB.json"));
+      expect((await getPassage("BSB", "John 3:16"))?.text).toMatch(/loved the world/);
+    } finally {
+      if (previous === undefined) delete process.env.BIBLE_DATA_DIR;
+      else process.env.BIBLE_DATA_DIR = previous;
+      clearCorpusCache();
+    }
+  });
+});

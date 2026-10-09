@@ -28,7 +28,7 @@ async function main() {
       words,
       branded,
       captionStyle: "karaoke_highlight",
-      verse: { text: "He split the rock and the waters gushed out.", ref: "Psalm 105:41", startSec: 4.2, durationSec: 2.2 },
+      verse: { text: "He split the rock and the waters gushed out.", ref: "Psalm 105:41", startSec: 2.6, durationSec: 2.0 },
     });
     const outputPath = `${dataDir}preview-${branded ? "branded" : "clean"}.mp4`;
     const started = Date.now();
