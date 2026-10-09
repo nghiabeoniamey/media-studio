@@ -15,3 +15,6 @@ packages/bible/data/*.json
 !packages/bible/data/fixtures/
 .remotion/
 *.log
+
+# agent worktrees
+.claude/worktrees/

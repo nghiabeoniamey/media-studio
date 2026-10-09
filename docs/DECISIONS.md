@@ -133,7 +133,7 @@ Mọi lựa chọn dưới đây đều đổi được trong phần cấu hình
 | Nhạc | **Lyria 3.5** ($0.08/bài, tạo sẵn thư viện ~30 bài/niche). **Không dùng ElevenLabs Music**: điều khoản cấm tổ chức tôn giáo | Lyria / ElevenLabs Music | Lyria |
 | LLM | **Claude Opus 5.5** ($4/$20 mỗi triệu token, Batch giảm 50%). Có thể đổi sang Sonnet 5.5 ($2/$10) để tiết kiệm | Haiku 5.5 / Sonnet 5.5 | Opus/Sonnet + web search để fact-check |
 | Phụ đề | whisper.cpp qua `@remotion/install-whisper-cpp`, timestamp từng từ, chạy trên VPS, $0 | | |
-| Nguồn Kinh Thánh | Public domain: **WEB, WEB Catholic (WEBC), Douay-Rheims, BSB**. Tránh NIV. ESV chỉ trong giới hạn cho phép | | |
+| Nguồn Kinh Thánh | Public domain, lưu sẵn trong hệ thống: **BSB** (Berean Standard Bible, tiếng Anh hiện đại; mặc định cho series chung), **KJV**, **Douay-Rheims (DRC)** và **CPDV** (Công giáo, có đủ sách Đệ Nhị Luật). Tránh NIV. ESV chỉ trong giới hạn cho phép | | |
 
 ---
 
@@ -298,12 +298,19 @@ Chỉ mượn ý tưởng, không bê nguyên.
 
 ---
 
-## 10. Câu hỏi còn mở
+## 10. Quyết định bổ sung (sau vòng nghiên cứu)
 
-Không chặn việc bắt đầu MVP.
+| Câu hỏi | Quyết định |
+|---|---|
+| Video tham khảo (Phạm Công Trúc) | Học **kỹ thuật giữ nhân vật và góc máy**. Hệ thống được thiết kế quanh kỹ thuật này: thư viện character sheet 6 góc, ảnh tham chiếu bối cảnh, ngôn ngữ máy quay thống nhất (cỡ cảnh, góc, ống kính, chuyển động, quy tắc 180°), tái dùng setup cũ (`matchSetupOf`), nối khung cuối clip trước (`continueFrom`), hero clip luôn là image-to-video từ keyframe |
+| Nguồn thu | **YouTube là kênh chính** (YPP). FB/IG/TikTok đăng chéo để kéo reach |
+| LLM | **Cấu hình theo niche/series**. Mặc định Claude Opus 5.5 (effort high); đổi sang Sonnet 5.5 / Haiku 5.5 trong phần cài đặt niche |
+| Bắt đầu code | Bắt đầu MVP ngay; bạn chuẩn bị tài khoản/API key song song theo [`SETUP.md`](./SETUP.md) |
 
-1. Link tham khảo thật sự bạn muốn là gì? Kỹ thuật làm phim AI giữ nhân vật (như video của Phạm Công Trúc), hay định dạng reel của Jesus Daily?
-2. Bạn chấp nhận rằng chỉ YouTube trả tiền từ VN không? Có muốn thêm nguồn thu khác (affiliate, quyên góp, sản phẩm số) không?
-3. LLM: dùng Opus 5.5 (chất lượng cao nhất, ~$5–16/tháng) hay Sonnet 5.5 (rẻ hơn khoảng một nửa)?
-4. Ai duyệt nội dung thần học cho series Công giáo? Có để Chúa Giê-su nói ở ngôi thứ nhất không?
-5. Chấp nhận chờ tối đa khoảng 24h cho bản gen đầu (dùng Batch API, giảm 50% chi phí ảnh/LLM) không, hay cần nhanh?
+### Câu hỏi còn mở
+
+Không chặn MVP.
+
+1. Ai duyệt nội dung thần học cho series Công giáo? Mặc định series này luôn bắt buộc duyệt kịch bản.
+2. Có để Chúa Giê-su nói ở ngôi thứ nhất không? Mặc định: không, chỉ kể chuyện ở ngôi thứ ba.
+3. Có chấp nhận chờ tối đa khoảng 24h cho bản gen đầu (Batch API, giảm 50% chi phí ảnh/LLM) không? Mặc định: không, gen ngay.

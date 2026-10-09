@@ -1,0 +1,67 @@
+# Production stack for a single VPS. Usage: see docs/SETUP.md
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: media
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: media_studio
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres-init.sql:/docker-entrypoint-initdb.d/10-dbos.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U media -d media_studio"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build: { context: ., dockerfile: docker/Dockerfile, target: app }
+    image: media-studio:latest
+    restart: unless-stopped
+    command: ["pnpm", "--filter", "@media-studio/web", "start"]
+    env_file: .env
+    environment: &dbenv
+      DATABASE_URL: postgres://media:${POSTGRES_PASSWORD}@postgres:5432/media_studio
+      DBOS_SYSTEM_DATABASE_URL: postgres://media:${POSTGRES_PASSWORD}@postgres:5432/media_studio_dbos
+      STORAGE_DIR: /app/data/storage
+      STORAGE_CACHE_DIR: /app/data/cache
+    volumes:
+      - appdata:/app/data
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  worker:
+    image: media-studio:latest
+    restart: unless-stopped
+    command: ["pnpm", "--filter", "@media-studio/worker", "start"]
+    env_file: .env
+    environment:
+      <<: *dbenv
+      WHISPER_CPP_DIR: /opt/whisper
+    volumes:
+      - appdata:/app/data
+    # Chrome needs a larger /dev/shm for rendering
+    shm_size: 1gb
+    depends_on:
+      postgres: { condition: service_healthy }
+      web: { condition: service_started }
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?set APP_DOMAIN in .env, e.g. studio.example.com}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [web]
+
+volumes:
+  pgdata:
+  appdata:
+  caddy_data:
+  caddy_config:
